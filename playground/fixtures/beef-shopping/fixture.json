@@ -1,0 +1,7 @@
+{
+  "agent": "codex",
+  "name": "Create beef steak shopping list",
+  "description": "Beef steak shopping list starting point for checklist /visualize acceptance",
+  "threadId": "01a06c2d-291e-7bf1-8824-6b9b184c021c",
+  "transcript": "rollout.jsonl"
+}

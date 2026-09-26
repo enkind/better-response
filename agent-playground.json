@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/agent-playground/schema/config.schema.json",
+  "agent": "codex",
+  "before": ["pnpm --filter @better-response/web build:mcp-app"],
+  "services": [
+    {
+      "name": "Better Response web + MCP",
+      "command": "pnpm --filter @better-response/web dev",
+      "env": { "PORT": "3100", "NEXT_TELEMETRY_DISABLED": "1" },
+      "readyUrl": "http://127.0.0.1:3100"
+    }
+  ],
+  "collection": {
+    "plugins": [
+      {
+        "path": "./plugins/better-response/dist",
+        "mcpServers": {
+          "visualize": { "type": "http", "url": "http://127.0.0.1:3100/api/mcp" }
+        }
+      }
+    ]
+  },
+  "fixtures": ["./playground/fixtures"]
+}

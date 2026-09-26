@@ -6,8 +6,8 @@
   "packageManager": "pnpm@9.6.0",
   "scripts": {
     "build": "pnpm --filter @better-response/web build",
-    "dev": "node scripts/dev-codex.mjs",
-    "dev:codex": "node scripts/dev-codex.mjs",
+    "dev": "agent-playground dev",
+    "dev:codex": "agent-playground dev",
     "dev:cursor": "node scripts/dev-cursor.mjs",
     "dev:server": "pnpm --filter @better-response/web dev",
     "storybook": "pnpm --filter @better-response/openai-storybook dev",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
+    "@enkind/agent-playground": "^0.1.0",
     "typescript": "^5.7.2"
   }
 }
