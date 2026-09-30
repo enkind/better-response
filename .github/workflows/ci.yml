@@ -1,0 +1,62 @@
+name: CI/CD
+
+on:
+  pull_request:
+  push:
+    branches: [develop]
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Versions are aligned
+        run: |
+          version=$(jq -r .version package.json)
+          for file in apps/better-response/package.json packages/common/package.json packages/engawa/package.json packages/sdk/package.json plugins/better-response/package.json plugins/better-response/dist/.codex-plugin/plugin.json plugins/better-response/dist/.cursor-plugin/plugin.json; do
+            [ "$(jq -r .version "$file")" = "$version" ] || { echo "::error file=$file::Expected version $version"; exit 1; }
+          done
+          grep -q "version: \"$version\"" apps/better-response/mcp/app.ts || { echo "::error file=apps/better-response/mcp/app.ts::Expected version $version"; exit 1; }
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match version $version"; exit 1
+          fi
+      - run: pnpm typecheck
+      - run: pnpm build:storybook
+      - run: pnpm probe
+
+  deploy:
+    needs: check
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_type == 'tag' && 'production' || 'development' }}
+      url: ${{ vars.MCP_URL }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: npx --yes vercel@48.2.9 deploy --prod --yes --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+      - run: pnpm install --frozen-lockfile
+      - name: Probe the live endpoint
+        run: node apps/better-response/scripts/probe-mcp.mjs "${{ vars.MCP_URL }}"

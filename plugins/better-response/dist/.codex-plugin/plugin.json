@@ -1,6 +1,6 @@
 {
   "name": "better-response",
-  "version": "0.44.3",
+  "version": "0.44.4",
   "description": "Improve the agent's reply when plain text is hard to use.",
   "author": {
     "name": "Engawa"

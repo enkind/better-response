@@ -17,7 +17,7 @@ const RESOURCE_URI = "ui://visualize/app.html";
 
 // ChatGPT derives the widget's sandbox origin from this and requires it to be
 // unique per plugin. It identifies the app; it is not a fetch target.
-const WIDGET_DOMAIN = "https://betterresponse.vercel.app";
+const WIDGET_DOMAIN = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "betterresponse.vercel.app"}`;
 
 // The built app inlines every asset, so it needs no external origin at all.
 // resourceDomains covers script-src and style-src as well as img-src, so an

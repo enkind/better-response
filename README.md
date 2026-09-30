@@ -92,6 +92,15 @@ That command mirrors the plugin into `~/.cursor/plugins/local/better-response`. 
 
 For server-only or Cursor CLI development, run `pnpm dev:server`; the project-level `.cursor/mcp.json` points to the localhost HTTP route. `pnpm dev`, `pnpm dev:cursor`, and `pnpm dev:server` stop a leftover Next.js worker from a previous session before starting, so killing only the parent Node process no longer blocks the next run.
 
+## Environments
+
+| Environment | Git | MCP URL |
+| --- | --- | --- |
+| Development | every push to `develop` | `https://betterresponse-dev.vercel.app/api/mcp` |
+| Production | a `v<version>` tag on `main` | `https://betterresponse.vercel.app/api/mcp` |
+
+Open pull requests against `develop`. CI runs the typecheck, the Storybook build, and `pnpm probe` on every pull request, checks that every package and manifest carries the same version, and probes each deployed endpoint after deploying. To try the development server in ChatGPT, add its MCP URL as a connector in developer mode. A release merges `develop` into `main` and pushes the tag that matches the version.
+
 ## Scope
 
 Better Response is a free, noncommercial project in pre-release `0.x`. Breaking contract changes advance the minor version; `1.0.0` is reserved for the public release. The first product slice stops at local interaction inside the rendered view: nothing the user touches there is sent back to the agent.

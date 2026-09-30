@@ -1,5 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import packageJson from "../package.json" with { type: "json" };
 
 async function rejects(client, schema) {
   try {
@@ -38,6 +39,13 @@ function propValueAcceptsType(schema, type) {
   if (!endpoint) {
     throw new Error("Pass the Streamable HTTP endpoint to probe.");
   }
+  // A deployment advertises its own production host; a local build falls back
+  // to the production widget domain.
+  const endpointUrl = new URL(endpoint);
+  const widgetDomain =
+    endpointUrl.hostname === "127.0.0.1"
+      ? "https://betterresponse.vercel.app"
+      : endpointUrl.origin;
 
   const client = new Client({ name: "better-response-probe", version: "0.1.0" });
   const transport = new StreamableHTTPClientTransport(new URL(endpoint));
@@ -460,13 +468,11 @@ function propValueAcceptsType(schema, type) {
         typeof instructions === "string" &&
         instructions.length > 0 &&
         instructions.length <= 512,
-      widgetDomain:
-        resourceContent?._meta?.ui?.domain ===
-        "https://betterresponse.vercel.app",
+      serverVersion: client.getServerVersion()?.version === packageJson.version,
+      widgetDomain: resourceContent?._meta?.ui?.domain === widgetDomain,
       // Hosts disagree on whether ui metadata sits on the content item or the
       // response, so both must carry it.
-      widgetDomainOnResponse:
-        resource?._meta?.ui?.domain === "https://betterresponse.vercel.app",
+      widgetDomainOnResponse: resource?._meta?.ui?.domain === widgetDomain,
       widgetCsp:
         Array.isArray(resourceContent?._meta?.ui?.csp?.connectDomains) &&
         resourceContent._meta.ui.csp.connectDomains.length === 0 &&

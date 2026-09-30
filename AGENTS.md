@@ -56,9 +56,15 @@ Before committing any change that affects the Better Response distribution, eith
 - Minor: additions or breaking contract changes while the product remains in `0.x`.
 - Major: the `1.0.0` public release or a later incompatible contract change.
 
-Keep the versions in `package.json`, `apps/better-response/package.json`, `packages/common/package.json`, `packages/engawa/package.json`, `plugins/better-response/package.json`, both manifests under `plugins/better-response/dist/`, the MCP server, and the MCP App aligned. Run `pnpm probe`; the MCP App HTML is an ignored `apps/better-response` build artifact and must not be committed.
+Keep the versions in `package.json`, `apps/better-response/package.json`, `packages/common/package.json`, `packages/engawa/package.json`, `packages/sdk/package.json`, `plugins/better-response/package.json`, both manifests under `plugins/better-response/dist/`, the MCP server, and the MCP App aligned. Run `pnpm probe`; the MCP App HTML is an ignored `apps/better-response` build artifact and must not be committed.
 
 Root documentation or development-only changes that do not affect installed plugin files do not require a plugin version bump.
+
+## Environments and releases
+
+Work lands on `develop`. Every push to `develop` deploys to `https://betterresponse-dev.vercel.app/api/mcp`. `main` holds only what was released and accepts changes only through a pull request with passing CI.
+
+Production at `https://betterresponse.vercel.app/api/mcp` is the reviewed ChatGPT submission, so it changes only when a `v<version>` tag is pushed on `main`. Never run `vercel --prod` locally, and never tag while a submission is in review unless it is the approved release.
 
 ## Local Codex CLI
 
