@@ -103,4 +103,4 @@ Open pull requests against `develop`. CI runs the typecheck, the Storybook build
 
 ## Scope
 
-Better Response is a free, noncommercial project in pre-release `0.x`. Breaking contract changes advance the minor version; `1.0.0` is reserved for the public release. The first product slice stops at local interaction inside the rendered view: nothing the user touches there is sent back to the agent.
+Better Response is a free, noncommercial project that follows SemVer from its `1.0.0` public release: additions advance the minor version and breaking contract changes the major version. The first product slice stops at local interaction inside the rendered view: nothing the user touches there is sent back to the agent.

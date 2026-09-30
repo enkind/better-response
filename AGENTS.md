@@ -53,8 +53,10 @@ When adding or changing an interface under `packages/openai/view`, `packages/ope
 Before committing any change that affects the Better Response distribution, either marketplace entry, or generated artifacts, ALWAYS choose and apply a SemVer version bump. Never publish changed installable contents under an existing version because hosts may continue using a cached revision.
 
 - Patch: fixes, packaging changes, or internal changes that preserve the public contract.
-- Minor: additions or breaking contract changes while the product remains in `0.x`.
-- Major: the `1.0.0` public release or a later incompatible contract change.
+- Minor: backward-compatible additions to the public contract, such as a new component, prop, or accepted value.
+- Major: incompatible contract changes, such as removing or renaming a component, prop, or accepted value.
+
+The ChatGPT submission carries the same version as the repository. Every production release is submitted under that version.
 
 Keep the versions in `package.json`, `apps/better-response/package.json`, `packages/common/package.json`, `packages/engawa/package.json`, `packages/sdk/package.json`, `plugins/better-response/package.json`, both manifests under `plugins/better-response/dist/`, the MCP server, and the MCP App aligned. Run `pnpm probe`; the MCP App HTML is an ignored `apps/better-response` build artifact and must not be committed.
 
