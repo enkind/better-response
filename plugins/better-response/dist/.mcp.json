@@ -2,7 +2,7 @@
   "mcpServers": {
     "visualize": {
       "type": "http",
-      "url": "https://betterresponse-dev.vercel.app/api/mcp"
+      "url": "https://betterresponse.vercel.app/api/mcp"
     }
   }
 }
