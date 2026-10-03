@@ -96,10 +96,10 @@ For server-only or Cursor CLI development, run `pnpm dev:server`; the project-le
 
 | Environment | Git | MCP URL |
 | --- | --- | --- |
-| Development | every push to `develop` | `https://betterresponse-dev.vercel.app/api/mcp` |
+| Development | every push to `main` | `https://betterresponse-dev.vercel.app/api/mcp` |
 | Production | a `v<version>` tag on `main` | `https://betterresponse.vercel.app/api/mcp` |
 
-Open pull requests against `develop`. CI runs the typecheck, the Storybook build, and `pnpm probe` on every pull request, checks that every package and manifest carries the same version, and probes each deployed endpoint after deploying. To try the development server in ChatGPT, add its MCP URL as a connector in developer mode. A release merges `develop` into `main` and pushes the tag that matches the version.
+CI runs the typecheck, the Storybook build, and `pnpm probe` on every pull request, checks that every package and manifest carries the same version, and probes each deployed endpoint after deploying. To try the development server in ChatGPT, add its MCP URL as a connector in developer mode. A release pushes the tag that matches the version; once production passes its probe, CI publishes the `production` branch with the plugin pointed at production.
 
 ## Scope
 

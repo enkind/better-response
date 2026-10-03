@@ -3,7 +3,7 @@ name: CI/CD
 on:
   pull_request:
   push:
-    branches: [develop]
+    branches: [main]
     tags: ["v*"]
 
 permissions:
@@ -45,6 +45,8 @@ jobs:
     environment:
       name: ${{ github.ref_type == 'tag' && 'production' || 'development' }}
       url: ${{ vars.MCP_URL }}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v5
@@ -60,3 +62,18 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Probe the live endpoint
         run: node apps/better-response/scripts/probe-mcp.mjs "${{ vars.MCP_URL }}"
+      - name: Publish the production branch
+        if: github.ref_type == 'tag'
+        run: |
+          dist=plugins/better-response/dist
+          edit() { jq --arg url "$MCP_URL" "$2" "$1" > "$1.tmp" && mv "$1.tmp" "$1"; }
+          edit $dist/.mcp.json '.mcpServers.visualize.url = $url'
+          edit $dist/.cursor-plugin/plugin.json '.displayName = "Better Response" | .mcpServers.visualize.url = $url'
+          edit $dist/.codex-plugin/plugin.json '.interface.displayName = "Better Response"'
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add $dist
+          git diff --cached --quiet || git commit -qm "Release $GITHUB_REF_NAME"
+          git push --force origin HEAD:refs/heads/production
+        env:
+          MCP_URL: ${{ vars.MCP_URL }}
