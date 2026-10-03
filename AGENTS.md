@@ -64,9 +64,9 @@ Root documentation or development-only changes that do not affect installed plug
 
 ## Environments and releases
 
-Work lands on `main`. Every push to `main` deploys to `https://betterresponse-dev.vercel.app/api/mcp`, and `main`'s plugin manifests point there under the name "Better Response (Dev)".
+Work lands on `main`. Every push to `main` deploys to `https://betterresponse-dev.vercel.app/api/mcp`, and `main`'s plugin manifests point there under the name "Better Response (Dev)" with `better-response-dev.svg` as the logo.
 
-Production at `https://betterresponse.vercel.app/api/mcp` is the reviewed ChatGPT submission, so it changes only when a `v<version>` tag is pushed on `main`. CI deploys the tag, probes it live, and then publishes the `production` branch: the tagged tree with the plugin manifests rewritten to the production URL and name. Never commit to `production`, never run `vercel --prod` locally, and never tag while a submission is in review unless it is the approved release. Build submission archives from `production`.
+Production at `https://betterresponse.vercel.app/api/mcp` is the reviewed ChatGPT submission, so it changes only when a `v<version>` tag is pushed on `main`. CI deploys the tag, probes it live, and then publishes the `production` branch: the tagged tree with the plugin manifests rewritten to the production URL, name, and logo, and the dev logo removed. Never commit to `production`, never run `vercel --prod` locally, and never tag while a submission is in review unless it is the approved release. Build submission archives from `production`.
 
 ## Local Codex CLI
 

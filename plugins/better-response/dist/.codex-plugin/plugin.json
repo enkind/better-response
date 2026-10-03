@@ -19,7 +19,7 @@
     "defaultPrompt": [
       "Improve this response so it is easier to use"
     ],
-    "composerIcon": "./better-response.svg",
-    "logo": "./better-response.svg"
+    "composerIcon": "./better-response-dev.svg",
+    "logo": "./better-response-dev.svg"
   }
 }
