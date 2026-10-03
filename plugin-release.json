@@ -1,0 +1,37 @@
+{
+  "plugin": "plugins/better-response/dist",
+  "versionFiles": [
+    "package.json",
+    "apps/better-response/package.json",
+    "packages/common/package.json",
+    "packages/engawa/package.json",
+    "packages/sdk/package.json",
+    "plugins/better-response/package.json",
+    "plugins/better-response/dist/.codex-plugin/plugin.json",
+    "plugins/better-response/dist/.cursor-plugin/plugin.json"
+  ],
+  "archive": {
+    "name": "better-response",
+    "exclude": [".cursor-plugin"]
+  },
+  "production": {
+    "patch": {
+      "plugins/better-response/dist/.mcp.json": {
+        "mcpServers": { "visualize": { "url": "https://betterresponse.vercel.app/api/mcp" } }
+      },
+      "plugins/better-response/dist/.cursor-plugin/plugin.json": {
+        "displayName": "Better Response",
+        "logo": "./better-response.svg",
+        "mcpServers": { "visualize": { "url": "https://betterresponse.vercel.app/api/mcp" } }
+      },
+      "plugins/better-response/dist/.codex-plugin/plugin.json": {
+        "interface": {
+          "displayName": "Better Response",
+          "composerIcon": "./better-response.svg",
+          "logo": "./better-response.svg"
+        }
+      }
+    },
+    "remove": ["plugins/better-response/dist/better-response-dev.svg"]
+  }
+}

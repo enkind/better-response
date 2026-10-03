@@ -7,75 +7,16 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || 'release' }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version-file: .nvmrc
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Commits follow Conventional Commits
-        if: github.event_name != 'workflow_dispatch'
-        run: pnpm exec commitlint --from "$FROM" --to "$TO" --verbose
-        env:
-          FROM: ${{ github.event.pull_request.base.sha || github.event.before }}
-          TO: ${{ github.event.pull_request.head.sha || github.sha }}
-      - name: Versions are aligned
-        run: |
-          version=$(jq -r .version package.json)
-          for file in apps/better-response/package.json packages/common/package.json packages/engawa/package.json packages/sdk/package.json plugins/better-response/package.json plugins/better-response/dist/.codex-plugin/plugin.json plugins/better-response/dist/.cursor-plugin/plugin.json; do
-            [ "$(jq -r .version "$file")" = "$version" ] || { echo "::error file=$file::Expected version $version"; exit 1; }
-          done
-          grep -q "version: \"$version\"" apps/better-response/mcp/app.ts || { echo "::error file=apps/better-response/mcp/app.ts::Expected version $version"; exit 1; }
-      - run: pnpm typecheck
-      - run: pnpm build:storybook
-      - run: pnpm probe
-
-  deploy:
-    needs: check
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.event_name == 'workflow_dispatch' && 'production' || 'development' }}
-      url: ${{ vars.MCP_URL }}
-    permissions:
-      contents: write
-    env:
-      RELEASE_CHANNEL: ${{ github.event_name == 'workflow_dispatch' && 'stable' || 'dev' }}
-      MCP_URL: ${{ vars.MCP_URL }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version-file: .nvmrc
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - run: pnpm exec semantic-release
-      - name: Deploy the dev environment
-        if: env.RELEASE_CHANNEL == 'dev'
-        run: npx --yes vercel@48.2.9 deploy --prod --yes --token "$VERCEL_TOKEN"
-      - name: Probe the live endpoint
-        if: env.RELEASE_CHANNEL == 'dev'
-        run: node apps/better-response/scripts/probe-mcp.mjs "$MCP_URL"
+  plugin:
+    uses: enkind/.github/.github/workflows/plugin.yml@v1
+    with:
+      check: pnpm typecheck && pnpm build:storybook && pnpm probe
+      probe: node apps/better-response/scripts/probe-mcp.mjs "$MCP_URL"
+    secrets: inherit

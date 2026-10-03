@@ -50,7 +50,7 @@ When adding or changing an interface under `packages/openai/view`, `packages/ope
 
 ## Plugin package versioning
 
-Versions are computed by semantic-release from Conventional Commits. Never edit a version by hand; CI writes it into every package, both manifests, and the MCP App, and commits it back.
+Versions are computed by semantic-release from Conventional Commits. Never edit a version by hand; CI writes it into every file listed in `plugin-release.json` and commits it back, and the MCP server and MCP App read it from `apps/better-response/package.json`. The pipeline itself lives in [`enkind/.github`](https://github.com/enkind/.github), shared by every Enkind plugin repository; change it there, not here. `plugin-release.json` is this repository's side of that contract: the plugin folder, the version files, the upload archive, and the production values a stable release writes over `main`'s dev values.
 
 Every commit subject follows Conventional Commits, and CI rejects any that does not. The type decides the next release:
 

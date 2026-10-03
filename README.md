@@ -99,7 +99,7 @@ For server-only or Cursor CLI development, run `pnpm dev:server`; the project-le
 | Development | every push to `main`, published as a `vX.Y.Z-dev.N` prerelease | `https://betterresponse-dev.vercel.app/api/mcp` |
 | Production | the manual Release run, published as `vX.Y.Z` | `https://betterresponse.vercel.app/api/mcp` |
 
-Commit subjects follow [Conventional Commits](https://www.conventionalcommits.org): `fix:` releases a patch, `feat:` a minor, and `feat!:` a major. [semantic-release](https://semantic-release.gitbook.io) computes every version from them, so nobody edits versions by hand. CI checks commit subjects and runs the typecheck, the Storybook build, and `pnpm probe` on every pull request and push, and probes each deployed endpoint after deploying. To try the development server in ChatGPT, add its MCP URL as a connector in developer mode.
+Commit subjects follow [Conventional Commits](https://www.conventionalcommits.org): `fix:` releases a patch, `feat:` a minor, and `feat!:` a major. [semantic-release](https://semantic-release.gitbook.io) computes every version from them, so nobody edits versions by hand. The pipeline is the shared one in [`enkind/.github`](https://github.com/enkind/.github); `plugin-release.json` describes this repository to it. CI checks commit subjects and runs the typecheck, the Storybook build, and `pnpm probe` on every pull request and push, and probes each deployed endpoint after deploying. To try the development server in ChatGPT, add its MCP URL as a connector in developer mode.
 
 To release, run `gh workflow run ci.yml --ref main`. Production is deployed and probed before the GitHub release and the `production` branch are published. Every release, dev or stable, attaches `better-response-<version>.zip`.
 

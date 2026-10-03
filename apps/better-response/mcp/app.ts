@@ -10,6 +10,7 @@ import { createRoot } from "react-dom/client";
 import "@better-response/common/styles.css";
 import "@better-response/engawa/styles.css";
 import * as components from "./components/index.ts";
+import { version } from "../package.json";
 
 const root = document.querySelector<HTMLElement>("#app");
 
@@ -17,7 +18,7 @@ if (!root) {
   throw new Error("Missing app root");
 }
 
-const app = new App({ name: "Visualize", version: "1.0.1-dev.1" });
+const app = new App({ name: "Visualize", version });
 const reactRoot = createRoot(root);
 
 app.ontoolresult = (result) => {
