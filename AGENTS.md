@@ -50,23 +50,22 @@ When adding or changing an interface under `packages/openai/view`, `packages/ope
 
 ## Plugin package versioning
 
-Before committing any change that affects the Better Response distribution, either marketplace entry, or generated artifacts, ALWAYS choose and apply a SemVer version bump. Never publish changed installable contents under an existing version because hosts may continue using a cached revision.
+Versions are computed by semantic-release from Conventional Commits. Never edit a version by hand; CI writes it into every package, both manifests, and the MCP App, and commits it back.
 
-- Patch: fixes, packaging changes, or internal changes that preserve the public contract.
-- Minor: backward-compatible additions to the public contract, such as a new component, prop, or accepted value.
-- Major: incompatible contract changes, such as removing or renaming a component, prop, or accepted value.
+Every commit subject follows Conventional Commits, and CI rejects any that does not. The type decides the next release:
 
-The ChatGPT submission carries the same version as the repository. Every production release is submitted under that version.
+- `fix:` is a patch: a fix, a packaging change, or any other change to installed contents that preserves the public contract. Use it for such changes even when they are refactors, because a release is what gives hosts a new version to refresh their cached plugin.
+- `feat:` is a minor: a backward-compatible addition to the public contract, such as a new component, prop, or accepted value.
+- `feat!:` or `fix!:`, or a `BREAKING CHANGE:` footer, is a major: an incompatible contract change, such as removing or renaming a component, prop, or accepted value.
+- `docs:`, `ci:`, `chore:`, `test:`, and `refactor:` release nothing; use them only for changes that leave installed contents untouched.
 
-Keep the versions in `package.json`, `apps/better-response/package.json`, `packages/common/package.json`, `packages/engawa/package.json`, `packages/sdk/package.json`, `plugins/better-response/package.json`, both manifests under `plugins/better-response/dist/`, the MCP server, and the MCP App aligned. Run `pnpm probe`; the MCP App HTML is an ignored `apps/better-response` build artifact and must not be committed.
-
-Root documentation or development-only changes that do not affect installed plugin files do not require a plugin version bump.
+The ChatGPT submission carries the same version as the repository. Run `pnpm probe`; the MCP App HTML is an ignored `apps/better-response` build artifact and must not be committed.
 
 ## Environments and releases
 
-Work lands on `main`. Every push to `main` deploys to `https://betterresponse-dev.vercel.app/api/mcp`, and `main`'s plugin manifests point there under the name "Better Response (Dev)" with `better-response-dev.svg` as the logo.
+Work lands on `main`. Every push to `main` deploys to `https://betterresponse-dev.vercel.app/api/mcp` and, when its commits warrant a release, publishes a `vX.Y.Z-dev.N` GitHub prerelease. `main`'s plugin manifests point at the dev server under the name "Better Response (Dev)" with `better-response-dev.svg` as the logo.
 
-Production at `https://betterresponse.vercel.app/api/mcp` is the reviewed ChatGPT submission, so it changes only when a `v<version>` tag is pushed on `main`. CI deploys the tag, probes it live, and then publishes the `production` branch: the tagged tree with the plugin manifests rewritten to the production URL, name, and logo, and the dev logo removed. Never commit to `production`, never run `vercel --prod` locally, and never tag while a submission is in review unless it is the approved release. Build submission archives from `production`.
+Production at `https://betterresponse.vercel.app/api/mcp` is the ChatGPT submission's server. It changes only through the manual Release run of the CI/CD workflow on `main` (`gh workflow run ci.yml --ref main`), which computes the stable version, deploys and probes production before publishing anything, then publishes the GitHub release and the `production` branch: `main`'s tree with the plugin manifests rewritten to the production URL, name, and logo, and the dev logo removed. Each release attaches `better-response-<version>.zip`, the exact archive to upload when the skill, manifest text, or icon changed. Never commit to `production`, never create version tags by hand, never run `vercel --prod` locally, and never release while a submission is in review if the release changes tools, schemas, instructions, or the widget.
 
 ## Local Codex CLI
 
@@ -78,7 +77,7 @@ The agent owns committing completed work. After each coherent user-requested tas
 
 - Run the required validation and review the final diff.
 - Stage only the files and hunks created for that task, preserving unrelated or pre-existing work.
-- Create a clear, scoped commit before reporting the task complete.
+- Create a clear, scoped Conventional Commits commit before reporting the task complete.
 - Do not amend, rewrite, or push commits unless the user explicitly asks.
 
 If validation fails or a clean task-only commit cannot be made safely, stop before committing and explain the blocker. A user request to leave changes uncommitted overrides this rule.

@@ -19,8 +19,14 @@
     "typecheck": "pnpm --recursive typecheck"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@commitlint/cli": "^21",
+    "@commitlint/config-conventional": "^21",
     "@enkind/agent-playground": "^0.1.0",
+    "@semantic-release/exec": "^7",
+    "@semantic-release/git": "^11",
+    "@types/node": "^22.10.2",
+    "conventional-changelog-conventionalcommits": "^10.4.0",
+    "semantic-release": "^25",
     "typescript": "^5.7.2"
   }
 }

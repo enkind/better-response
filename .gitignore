@@ -11,6 +11,7 @@ logs/*.md
 .playwright-cli/
 /output/
 apps/better-response/mcp/dist/
+/.release/
 
 # Internal records kept local, never published. See AGENTS.md "Product context".
 /PRODUCT.md

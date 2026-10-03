@@ -96,10 +96,12 @@ For server-only or Cursor CLI development, run `pnpm dev:server`; the project-le
 
 | Environment | Git | MCP URL |
 | --- | --- | --- |
-| Development | every push to `main` | `https://betterresponse-dev.vercel.app/api/mcp` |
-| Production | a `v<version>` tag on `main` | `https://betterresponse.vercel.app/api/mcp` |
+| Development | every push to `main`, published as a `vX.Y.Z-dev.N` prerelease | `https://betterresponse-dev.vercel.app/api/mcp` |
+| Production | the manual Release run, published as `vX.Y.Z` | `https://betterresponse.vercel.app/api/mcp` |
 
-CI runs the typecheck, the Storybook build, and `pnpm probe` on every pull request, checks that every package and manifest carries the same version, and probes each deployed endpoint after deploying. To try the development server in ChatGPT, add its MCP URL as a connector in developer mode. A release pushes the tag that matches the version; once production passes its probe, CI publishes the `production` branch with the plugin pointed at production.
+Commit subjects follow [Conventional Commits](https://www.conventionalcommits.org): `fix:` releases a patch, `feat:` a minor, and `feat!:` a major. [semantic-release](https://semantic-release.gitbook.io) computes every version from them, so nobody edits versions by hand. CI checks commit subjects and runs the typecheck, the Storybook build, and `pnpm probe` on every pull request and push, and probes each deployed endpoint after deploying. To try the development server in ChatGPT, add its MCP URL as a connector in developer mode.
+
+To release, run `gh workflow run ci.yml --ref main`. Production is deployed and probed before the GitHub release and the `production` branch are published. Every release, dev or stable, attaches `better-response-<version>.zip`.
 
 ## Scope
 
