@@ -1,7 +1,7 @@
 {
   "name": "better-response",
   "displayName": "Better Response (Dev)",
-  "version": "1.0.0",
+  "version": "1.0.1-dev.1",
   "description": "Improve the agent's reply when plain text is hard to use.",
   "logo": "./better-response-dev.svg",
   "skills": "./skills/",

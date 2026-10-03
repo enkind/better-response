@@ -17,7 +17,7 @@ if (!root) {
   throw new Error("Missing app root");
 }
 
-const app = new App({ name: "Visualize", version: "1.0.0" });
+const app = new App({ name: "Visualize", version: "1.0.1-dev.1" });
 const reactRoot = createRoot(root);
 
 app.ontoolresult = (result) => {
