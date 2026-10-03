@@ -8,7 +8,7 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "Better Response",
+    "displayName": "Better Response (Dev)",
     "shortDescription": "Improve the agent's response",
     "longDescription": "When a text reply is hard to work with, Better Response turns the current conversation into a small interface the user can actually use.",
     "developerName": "Engawa",

@@ -1,6 +1,6 @@
 {
   "name": "better-response",
-  "displayName": "Better Response",
+  "displayName": "Better Response (Dev)",
   "version": "1.0.0",
   "description": "Improve the agent's reply when plain text is hard to use.",
   "logo": "./better-response.svg",
@@ -8,7 +8,7 @@
   "mcpServers": {
     "visualize": {
       "type": "http",
-      "url": "https://betterresponse.vercel.app/api/mcp"
+      "url": "https://betterresponse-dev.vercel.app/api/mcp"
     }
   }
 }

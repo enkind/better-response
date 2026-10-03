@@ -16,7 +16,7 @@ packages/engawa/       Engawa schema, renderer, components, and styles
 plugins/better-response/dist/  Installable skill, host metadata, logo, and MCP URL
 ```
 
-`apps/` contains deployable services, `packages/` contains framework packages, and `plugins/<name>/dist` contains the files installed into an agent host. Better Response has one small plugin distribution shared by Cursor and Codex. It points both hosts to the Visualize MCP server owned entirely by `apps/better-response`; no server or renderer is installed locally.
+`apps/` contains deployable services, `packages/` contains framework packages, and `plugins/<name>/dist` contains the files installed into an agent host. Better Response has one small plugin distribution shared by Cursor and Codex. It points both hosts to the Visualize MCP server owned entirely by `apps/better-response`; no server or renderer is installed locally. On `main`, the plugin is **Better Response (Dev)** and connects to the development server; install from the `production` branch for the released plugin.
 
 The remaining dotfolders are host entrypoints, not competing layouts:
 
@@ -65,7 +65,7 @@ To update the personal Codex installation explicitly instead:
 pnpm install:codex
 ```
 
-That command mirrors the plugin into `~/plugins/better-response`, applies the Codex cachebuster, and reinstalls `better-response@personal`. The installed plugin connects to `https://betterresponse.vercel.app/api/mcp`; fully restart the normal Codex instance if it retains the prior plugin configuration.
+That command mirrors the plugin into `~/plugins/better-response`, applies the Codex cachebuster, and reinstalls `better-response@personal`. The installed plugin connects to `https://betterresponse-dev.vercel.app/api/mcp`; fully restart the normal Codex instance if it retains the prior plugin configuration.
 
 ## Develop through Cursor
 
@@ -88,7 +88,7 @@ mkdir -p "$HOME/.cursor/plugins/local"
 pnpm install:cursor
 ```
 
-That command mirrors the plugin into `~/.cursor/plugins/local/better-response`. The installed plugin connects to `https://betterresponse.vercel.app/api/mcp`. It skips the sync when Cursor's local plugin directory does not exist. After syncing, use Cursor's plugin reload; fully restart Cursor if it retains the prior plugin configuration. Use a real directory rather than a symlink. Do not keep a marketplace-installed Better Response enabled alongside the local copy.
+That command mirrors the plugin into `~/.cursor/plugins/local/better-response`. The installed plugin connects to `https://betterresponse-dev.vercel.app/api/mcp`. It skips the sync when Cursor's local plugin directory does not exist. After syncing, use Cursor's plugin reload; fully restart Cursor if it retains the prior plugin configuration. Use a real directory rather than a symlink. Do not keep a marketplace-installed Better Response enabled alongside the local copy.
 
 For server-only or Cursor CLI development, run `pnpm dev:server`; the project-level `.cursor/mcp.json` points to the localhost HTTP route. `pnpm dev`, `pnpm dev:cursor`, and `pnpm dev:server` stop a leftover Next.js worker from a previous session before starting, so killing only the parent Node process no longer blocks the next run.
 
