@@ -68,8 +68,9 @@ jobs:
           dist=plugins/better-response/dist
           edit() { jq --arg url "$MCP_URL" "$2" "$1" > "$1.tmp" && mv "$1.tmp" "$1"; }
           edit $dist/.mcp.json '.mcpServers.visualize.url = $url'
-          edit $dist/.cursor-plugin/plugin.json '.displayName = "Better Response" | .mcpServers.visualize.url = $url'
-          edit $dist/.codex-plugin/plugin.json '.interface.displayName = "Better Response"'
+          edit $dist/.cursor-plugin/plugin.json '.displayName = "Better Response" | .logo = "./better-response.svg" | .mcpServers.visualize.url = $url'
+          edit $dist/.codex-plugin/plugin.json '.interface.displayName = "Better Response" | .interface.composerIcon = "./better-response.svg" | .interface.logo = "./better-response.svg"'
+          rm -f $dist/better-response-dev.svg
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add $dist

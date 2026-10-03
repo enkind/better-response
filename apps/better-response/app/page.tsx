@@ -4,7 +4,7 @@ import { Mark } from "./mark";
 import "./styles.css";
 
 const INSTALL_PROMPT =
-  "Install the Better Response plugin from https://github.com/enkind/better-response";
+  "Install the Better Response plugin from the production branch of https://github.com/enkind/better-response";
 
 export default function Home() {
   return (
