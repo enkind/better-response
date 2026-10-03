@@ -69,7 +69,7 @@ Production at `https://betterresponse.vercel.app/api/mcp` is the ChatGPT submiss
 
 ## Local Codex CLI
 
-For local plugin management on this Mac, use the signed CLI bundled with the app at `/Applications/ChatGPT.app/Contents/Resources/codex`. Do not invoke `/usr/local/bin/codex`; macOS blocks that standalone installation and displays a malware warning.
+For local plugin management on this Mac, use the signed CLI bundled with the app at `/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex`. Do not invoke `/usr/local/bin/codex`; macOS blocks that standalone installation and displays a malware warning.
 
 ## Commit ownership
 
